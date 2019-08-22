@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CharacterCard from "./CharacterCard";
 
 export default function CharacterList() {
   // setting state using data
@@ -11,7 +12,8 @@ export default function CharacterList() {
     axios
       .get('https://rickandmortyapi.com/api/character/')
       .then(response => {
-        setCharacters(response.data);
+        console.log(response);
+        setCharacters(response.data.results);
       })
       .catch(error => {
         console.error('Server Error', error);
@@ -25,26 +27,15 @@ export default function CharacterList() {
   return (
     <div>
     {characters.map(character => (
-      <CharacterDetails key={character.id} character={character} />
+      <CharacterCard key={character.id} 
+        name={character.name}
+        image={character.image}
+        species={character.species}
+        gender={character.gender}
+        status={character.status}
+
+       />
     ))}
     </div>
   );
-}
-
-function CharacterDetails({ character }) {
-  const { image, name, species, gender, status } = character;
-  return (
-    <section className="character-list grid-view">
-      <div className="character-info">
-        <img src={image} alt={name} />
-        <h3>{name}</h3>
-        <h4>{species}</h4>
-        <h4>{gender}</h4>
-        <h4>{status}</h4>
-      </div>
-    
-  </section>
-
-
-  )
 };
